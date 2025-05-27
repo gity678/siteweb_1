@@ -12,9 +12,11 @@
       margin: 0;
       padding: 0;
     }
+
     h1 {
       margin-top: 20px;
     }
+
     video {
       width: 90%;
       max-width: 800px;
@@ -24,6 +26,14 @@
       border-radius: 10px;
       background: #000;
     }
+
+    select {
+      padding: 8px 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
@@ -31,18 +41,47 @@
   <h1>بث مباشر - قناة الجزيرة الإنجليزية</h1>
 
   <video id="video" controls autoplay></video>
+  
+  <div>
+    <label for="qualitySelect">اختيار الجودة:</label>
+    <select id="qualitySelect">
+      <option>جاري التحميل...</option>
+    </select>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
     const video = document.getElementById('video');
-    const videoSrc = 'https://live-hls-web-aje.getaj.net/AJE/index.m3u8'; // رابط بث Al Jazeera English
+    const qualitySelect = document.getElementById('qualitySelect');
+    const videoSrc = 'https://live-hls-web-aje.getaj.net/AJE/index.m3u8';
 
     if (Hls.isSupported()) {
       const hls = new Hls();
       hls.loadSource(videoSrc);
       hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function () {
-        video.play();
+
+      hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+        qualitySelect.innerHTML = ''; // تفريغ الخيارات الافتراضية
+
+        const levels = hls.levels;
+
+        levels.forEach((level, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.text = `${level.height}p`;
+          qualitySelect.appendChild(option);
+        });
+
+        // إضافة خيار الجودة التلقائية
+        const autoOption = document.createElement('option');
+        autoOption.value = -1;
+        autoOption.text = 'تلقائي';
+        qualitySelect.insertBefore(autoOption, qualitySelect.firstChild);
+        qualitySelect.value = -1;
+
+        qualitySelect.addEventListener('change', function () {
+          hls.currentLevel = parseInt(this.value);
+        });
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = videoSrc;
