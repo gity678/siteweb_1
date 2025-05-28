@@ -6,13 +6,14 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
+      background: #121212;
+      color: #eee;
       text-align: center;
-      padding: 50px 20px;
+      padding: 40px 20px;
     }
     h1 {
       margin-bottom: 30px;
+      color: #0af;
     }
     ul {
       list-style: none;
@@ -21,33 +22,39 @@
       margin: 0 auto;
     }
     li {
-      background-color: #0af;
-      margin: 12px 0;
-      padding: 15px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 20px;
-      transition: background-color 0.3s;
+      background: #222;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      padding: 15px;
+      transition: background-color 0.3s ease;
     }
     li:hover {
-      background-color: #08c;
+      background: #0af;
     }
     a {
-      color: inherit;
+      color: #eee;
       text-decoration: none;
+      font-size: 1.2rem;
       display: block;
     }
-  </style>
-</head>
-<body>
+    a:hover {
+      color: #fff;
+    }
+    a.back-link {
+      display: inline-block;
+      margin-top: 30px;
+      color: #0af;
+      text-decoration: none;
+      font-size: 16px;
+      border: 1px solid #0af;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    a.back-link:hover {
+      background-color: #08c;
+      color: #fff;
+    }
+  </style
 
-  <h1>اختر القناة التي تريد مشاهدتها</h1>
-
-  <ul>
-    <li><a href="player.html?channel=france24">فرانس 24 العربية</a></li>
-    <li><a href="player.html?channel=euronews">يورو نيوز الإنجليزية</a></li>
-    <li><a href="player.html?channel=aljazeera">الجزيرة الإنجليزية</a></li>
-  </ul>
-
-</body>
-</html>
+  
