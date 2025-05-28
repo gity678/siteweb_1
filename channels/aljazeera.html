@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>قناة الجزيرة</title>
+  <style>
+    body { font-family: Arial; background: #000; color: #fff; text-align: center; padding: 20px; }
+    video { width: 90%; max-width: 800px; border: 4px solid #0af; border-radius: 10px; background: #000; }
+  </style>
+</head>
+<body>
+  <h1>بث مباشر - قناة الجزيرة الإنجليزية</h1>
+  <video id="video" controls autoplay></video>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    const videoSrc = 'https://live-hls-web-aje.getaj.net/AJE/index.m3u8';
+    const video = document.getElementById('video');
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
+    }
+  </script>
+</body>
+</html>
