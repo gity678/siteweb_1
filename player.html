@@ -1,26 +1,116 @@
-const channels = {
-  france24: {
-    name: "فرانس 24 العربية",
-    url: "https://static.france24.com/live/F24_AR_LO_HLS/live_web.m3u8"
-  },
-  euronews: {
-    name: "يورو نيوز الإنجليزية",
-    url: "https://rakuten-euronews-1-be.samsung.wurl.tv/playlist.m3u8"
-  },
-  aljazeera: {
-    name: "الجزيرة الإنجليزية",
-    url: "https://aljazeera-hls.akamaized.net/hls/live/2022358/aljazeera_english/index.m3u8"
-  },
-  alarabiya: {
-    name: "قناة العربية",
-    url: "https://live.alarabiya.net/hls/alarabiya_240p.m3u8"  // رابط تجريبي
-  },
-  skynews: {
-    name: "سكاي نيوز",
-    url: "https://skynewsarabic-lh.akamaihd.net/i/skynewsarabic_1@98243/master.m3u8" // رابط تجريبي
-  },
-  beinews: {
-    name: "بي إن الإخبارية",
-    url: "https://cbsnbeinsports-lh.akamaihd.net/i/bein_ar_live1@168432/master.m3u8"  // رابط تجريبي
-  }
-};
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>مشغل القنوات</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    video {
+      width: 90%;
+      max-width: 800px;
+      border-radius: 10px;
+      background: #000;
+      margin-top: 20px;
+    }
+    a.back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: #0af;
+      text-decoration: none;
+      font-size: 16px;
+      border: 1px solid #0af;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    a.back-link:hover {
+      background-color: #08c;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>مشغل القنوات</h1>
+  <video id="video" controls autoplay></video>
+  <br />
+  <a href="list.html" class="back-link">عودة إلى قائمة القنوات</a>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    const video = document.getElementById('video');
+
+    // تعريف القنوات وروابط البث
+    const channels = {
+      france24: {
+        name: "فرانس 24 العربية",
+        url: "https://static.france24.com/live/F24_AR_LO_HLS/live_web.m3u8"
+      },
+      euronews: {
+        name: "يورو نيوز الإنجليزية",
+        url: "https://rakuten-euronews-1-be.samsung.wurl.tv/playlist.m3u8"
+      },
+      aljazeera: {
+        name: "الجزيرة الإنجليزية",
+        url: "https://aljazeera-hls.akamaized.net/hls/live/2022358/aljazeera_english/index.m3u8"
+      },
+      alarabiya: {
+        name: "قناة العربية",
+        url: "https://live.alarabiya.net/hls/alarabiya_240p.m3u8"
+      },
+      skynews: {
+        name: "سكاي نيوز",
+        url: "https://skynewsarabic-lh.akamaihd.net/i/skynewsarabic_1@98243/master.m3u8"
+      },
+      beinews: {
+        name: "بي إن الإخبارية",
+        url: "https://cbsnbeinsports-lh.akamaihd.net/i/bein_ar_live1@168432/master.m3u8"
+      }
+    };
+
+    // دالة لجلب باراميتر القناة من الرابط
+    function getChannelFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('channel');
+    }
+
+    // تشغيل القناة بناءً على باراميتر URL
+    function playChannel(channelKey) {
+      if (!channelKey || !channels[channelKey]) {
+        alert('القناة غير موجودة أو غير محددة.');
+        return;
+      }
+
+      const channel = channels[channelKey];
+      document.title = channel.name + " - مشغل القنوات";
+
+      const videoSrc = channel.url;
+
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = videoSrc;
+        video.addEventListener('loadedmetadata', function () {
+          video.play();
+        });
+      } else {
+        alert('متصفحك لا يدعم تشغيل هذا النوع من البث.');
+      }
+    }
+
+    // ابدأ التشغيل
+    playChannel(getChannelFromURL());
+  </script>
+</body>
+</html>
