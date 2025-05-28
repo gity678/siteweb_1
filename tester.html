@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>أداة اختبار القنوات</title>
+  <style>
+    body{background:#111;color:#fff;font-family:Arial,sans-serif;text-align:center;margin:0;padding:20px}
+    h1{color:#0af;margin-bottom:10px;font-size:2rem}
+    #status{margin:10px 0;font-size:1rem}
+    video{width:90%;max-width:800px;border:4px solid #0af;border-radius:10px;background:#000}
+    a{color:#0af;text-decoration:none;margin-top:20px;display:inline-block;border:1px solid #0af;
+       padding:8px 15px;border-radius:8px;transition:.3s}
+    a:hover{background:#08c;color:#fff}
+  </style>
+</head>
+<body>
+
+<h1 id="title">أداة اختبار القنوات</h1>
+<p id="status">جاري التهيئة…</p>
+<video id="video" controls autoplay></video>
+<br>
+<a href="list.html">عودة إلى قائمة القنوات</a>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+/*===== تعريف القنوات مع أكثر من رابط محتمل =====*/
+const SOURCES = {
+  france24: {
+    name: 'فرانس 24 العربية',
+    urls: [
+      'https://static.france24.com/live/F24_AR_HI_HLS/live_web.m3u8',
+      'https://static.france24.com/live/F24_AR_LO_HLS/live_web.m3u8'
+    ]
+  },
+  euronews: {
+    name: 'يورو نيوز الإنجليزية',
+    urls: [
+      'https://rakuten-euronews-1-be.samsung.wurl.tv/playlist.m3u8',
+      'https://euronews-english-live.akamaized.net/hls/live/598367/euronews-english/master.m3u8'
+    ]
+  },
+  aljazeera: {
+    name: 'الجزيرة الإنجليزية',
+    urls: [
+      'https://live-hls-web-aje.getaj.net/AJE/index.m3u8',
+      'https://aljazeera-hls.akamaized.net/hls/live/2022358/aljazeera_english/index.m3u8'
+    ]
+  },
+  alarabiya: {
+    name: 'قناة العربية',
+    urls: [
+      'https://live.alarabiya.net/alarabiya/stream_720p/playlist.m3u8',
+      'https://live.alarabiya.net/hls/alarabiya_240p.m3u8'
+    ]
+  },
+  skynews: {
+    name: 'سكاي نيوز عربية',
+    urls: [
+      'https://skynewsarabic-lh.akamaihd.net/i/skynewsarabic_1@98243/master.m3u8',
+      'https://snadtv-skynewsarabic-prod.s3.amazonaws.com/zata/sna.m3u8'
+    ]
+  },
+  beinews: {
+    name: 'بي إن الإخبارية',
+    urls: [
+      'https://cbsnbeinsports-lh.akamaihd.net/i/bein_ar_live1@168432/master.m3u8',
+      'https://bein-sports-live.akamaized.net/hls/live/2003229/bein_live/index.m3u8'
+    ]
+  }
+};
+
+/*===== مساعدات =====*/
+function qs(key){return new URLSearchParams(location.search).get(key);}
+const channelKey=qs('channel');
+const info=SOURCES[channelKey];
+const video=document.getElementById('video');
+const status=document.getElementById('status');
+document.getElementById('title').textContent= info ? `اختبار - ${info.name}`:'القناة غير معرّفة';
+
+/*===== آلية الاختبار =====*/
+if(!info){
+  status.textContent='القناة غير موجودة في القائمة.';
+}else{
+  let idx=0, hls, timer;
+
+  function tryNext(){
+    if(hls){hls.destroy(); hls=null;}
+    if(idx>=info.urls.length){
+      status.textContent='لم ينجح أي رابط، ربما تغيرت الروابط أو تحتاج VPN.';
+      return;
+    }
+    const src=info.urls[idx++];
+    status.textContent=`محاولة ${idx}/${info.urls.length}: ${src}`;
+    
+    if(Hls.isSupported()){
+      hls=new Hls();
+      hls.loadSource(src);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MEDIA_ATTACHED, ()=> video.play());
+      hls.on(Hls.Events.ERROR, ()=> fallback());
+    }else if(video.canPlayType('application/vnd.apple.mpegurl')){
+      video.src=src;
+      video.play().catch(()=>{});
+      video.onerror=fallback;
+    }else{
+      status.textContent='متصفحك لا يدعم HLS.';
+    }
+    // مهلة 3 ثوانٍ: إذا لم يبدأ التشغيل ننتقل للذي بعده
+    clearTimeout(timer);
+    timer=setTimeout(()=> {
+      if(video.readyState<2) fallback();
+    },3000);
+  }
+
+  function fallback(){
+    status.textContent+=' ❌ فشل…';
+    tryNext();
+  }
+
+  video.onplaying=()=>{clearTimeout(timer);status.textContent+=' ✅ نجح!';};
+  tryNext();
+}
+</script>
+</body>
+</html>
