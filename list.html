@@ -6,67 +6,73 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #eee;
+      background: #111;
+      color: #fff;
       text-align: center;
-      padding: 40px 20px;
+      padding: 20px;
     }
     h1 {
-      margin-bottom: 30px;
       color: #0af;
+      margin-bottom: 20px;
     }
-    ul {
-      list-style-type: none;
-      padding: 0;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-    li {
-      background-color: #222;
-      margin-bottom: 15px;
+    .channel {
+      background: #222;
+      border: 2px solid #0af;
       border-radius: 10px;
+      margin: 10px auto;
       padding: 15px;
-    }
-    li a {
-      color: #eee;
-      text-decoration: none;
+      width: 90%;
+      max-width: 400px;
       font-size: 1.2rem;
-      display: block;
     }
-    li a:hover {
-      color: #0af;
-    }
-    a.back-link {
+    a {
       display: inline-block;
-      margin-top: 30px;
-      color: #0af;
-      text-decoration: none;
-      font-size: 16px;
-      border: 1px solid #0af;
-      padding: 8px 15px;
-      border-radius: 8px;
-      transition: background-color 0.3s;
-    }
-    a.back-link:hover {
-      background-color: #08c;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #0af;
       color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+    a:hover {
+      background: #08c;
     }
   </style>
 </head>
 <body>
 
-  <h1>اختر القناة التي تريد مشاهدتها</h1>
+  <h1>قائمة القنوات المباشرة</h1>
 
-  <ul>
-    <li><a href="player.html?channel=france24">فرانس 24 العربية</a></li>
-    <li><a href="player.html?channel=euronews">يورو نيوز الإنجليزية</a></li>
-    <li><a href="player.html?channel=aljazeera">الجزيرة الإنجليزية</a></li>
-    <li><a href="player.html?channel=alarabiya">قناة العربية</a></li>
-    <li><a href="player.html?channel=skynews">سكاي نيوز</a></li>
-    <li><a href="player.html?channel=beinews">بي إن الإخبارية</a></li>
-  </ul>
+  <div class="channel">
+    الجزيرة الإنجليزية<br>
+    <a href="tester.html?channel=aljazeera">تشغيل</a>
+  </div>
 
-  <a href="index.html" class="back-link">عودة إلى الصفحة الرئيسية</a>
+  <div class="channel">
+    فرانس 24 العربية<br>
+    <a href="tester.html?channel=france24">تشغيل</a>
+  </div>
+
+  <div class="channel">
+    يورونيوز الإنجليزية<br>
+    <a href="tester.html?channel=euronews">تشغيل</a>
+  </div>
+
+  <div class="channel">
+    قناة العربية<br>
+    <a href="tester.html?channel=alarabiya">تشغيل</a>
+  </div>
+
+  <div class="channel">
+    سكاي نيوز عربية<br>
+    <a href="tester.html?channel=skynews">تشغيل</a>
+  </div>
+
+  <div class="channel">
+    بي إن الإخبارية<br>
+    <a href="tester.html?channel=beinews">تشغيل</a>
+  </div>
 
 </body>
 </html>
