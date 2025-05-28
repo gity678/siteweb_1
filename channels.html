@@ -62,7 +62,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
-    // روابط القنوات مع المفاتيح
+    // روابط القنوات مع مفاتيح اختيارها في URL
     const channels = {
       france24: {
         name: "فرانس 24 العربية",
@@ -78,6 +78,7 @@
       }
     };
 
+    // دالة لاسترجاع قيمة المعامل من URL
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
