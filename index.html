@@ -2,122 +2,50 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <title>مشغل القنوات المتعدد</title>
+  <title>مرحبا بك في موقع البث المباشر</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #111;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       color: #fff;
       text-align: center;
-      padding: 20px;
+      padding: 100px 20px;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
     h1 {
+      font-size: 3rem;
       margin-bottom: 20px;
     }
-    .channel-button {
+    p {
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+    }
+    a.button {
       background-color: #0af;
       color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
-      margin: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
-    }
-    .channel-button:hover {
-      background-color: #08c;
-    }
-    video {
-      width: 90%;
-      max-width: 800px;
-      margin-top: 20px;
-      border: 4px solid #0af;
+      text-decoration: none;
+      padding: 15px 40px;
+      font-size: 1.2rem;
       border-radius: 10px;
-      background: black;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 170, 255, 0.5);
     }
-    select {
-      margin-top: 15px;
-      padding: 8px 12px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
+    a.button:hover {
+      background-color: #08c;
+      box-shadow: 0 6px 20px rgba(0, 136, 204, 0.7);
     }
   </style>
 </head>
 <body>
 
-  <h1>اختر القناة وشاهد البث المباشر</h1>
-
-  <div>
-    <button class="channel-button" data-src="https://static.france24.com/live/F24_AR_LO_HLS/live_web.m3u8">فرانس 24 العربية</button>
-    <button class="channel-button" data-src="https://rakuten-euronews-1-be.samsung.wurl.tv/playlist.m3u8">يورو نيوز الإنجليزية</button>
-    <button class="channel-button" data-src="https://aljazeera-clips.akamaized.net/hls/live/2022/aljazeera/english.m3u8">الجزيرة الإنجليزية</button>
-  </div>
-
-  <video id="video" controls autoplay></video>
-
-  <div>
-    <label for="qualitySelect">اختر الجودة:</label>
-    <select id="qualitySelect">
-      <option>جاري التحميل...</option>
-    </select>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script>
-    const video = document.getElementById('video');
-    const qualitySelect = document.getElementById('qualitySelect');
-    let hls;
-    
-    function loadStream(url) {
-      if (hls) {
-        hls.destroy();
-        hls = null;
-      }
-
-      if (Hls.isSupported()) {
-        hls = new Hls();
-        hls.loadSource(url);
-        hls.attachMedia(video);
-
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          qualitySelect.innerHTML = '';
-          hls.levels.forEach((level, index) => {
-            const option = document.createElement('option');
-            option.value = index;
-            option.text = `${level.height}p`;
-            qualitySelect.appendChild(option);
-          });
-          const autoOption = document.createElement('option');
-          autoOption.value = -1;
-          autoOption.text = 'تلقائي';
-          qualitySelect.insertBefore(autoOption, qualitySelect.firstChild);
-          qualitySelect.value = -1;
-
-          qualitySelect.onchange = function () {
-            hls.currentLevel = parseInt(this.value);
-          };
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = url;
-        video.addEventListener('loadedmetadata', () => video.play());
-      }
-    }
-
-    // اختيار القناة الأول تلقائيًا
-    const buttons = document.querySelectorAll('.channel-button');
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        loadStream(btn.getAttribute('data-src'));
-      });
-    });
-
-    // تحميل أول قناة بشكل تلقائي
-    if (buttons.length > 0) {
-      loadStream(buttons[0].getAttribute('data-src'));
-    }
-  </script>
+  <h1>أهلاً وسهلاً بك في موقع البث المباشر</h1>
+  <p>تابع قنواتك المفضلة بسهولة وبجودة عالية</p>
+  <a href="channels.html" class="button">اذهب إلى اختيار القنوات</a>
 
 </body>
 </html>
